@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj</string>
+    <string name="register">Zarejestruj</string>
+    <string name="create_account">Stwórz konto</string>
+    <string name="or_sign_up">Lub zarejestruj przez</string>
+    <string name="or_login">Lub zaloguj przez</string>
+    <string name="welcome_text_login">Witaj \n Miło ciebie widzieć!</string>
+    <string name="welcome_text_register">Stwórz konto \n Żeby zacząć teraz!</string>
+</resources>
