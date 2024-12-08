@@ -2,10 +2,14 @@ package menene.app.quickshare.navigation.screen.notescreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,8 +37,7 @@ fun NoteScreen(
     var lastContent by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        viewModel.getNote(noteId)
-        viewModel.observeNote(noteId)
+        viewModel.initialize(noteId)
     }
 
     LaunchedEffect(note) {
@@ -66,14 +69,23 @@ fun NoteScreen(
         TextField(
             value = title,
             onValueChange = { title = it },
-            modifier = Modifier.height(64.dp),
-            label = { Text(stringResource(R.string.title)) }
+            modifier = Modifier
+                .height(64.dp)
+                .fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            ),
+            textStyle = MaterialTheme.typography.labelLarge,
+            placeholder = { Text(stringResource(R.string.title)) }
         )
 
-        OutlinedTextField(
+        BasicTextField(
             value = content,
             onValueChange = { content = it },
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp),
+            textStyle = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         )
     }
 }

@@ -22,6 +22,9 @@ sealed class Screen{
         val noteId: String
     ): Screen()
 
+    @Serializable
+    data object UserScreen: Screen()
+
 
     @Serializable
     data object AuthGraph: Screen()

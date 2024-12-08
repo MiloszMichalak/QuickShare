@@ -1,7 +1,6 @@
 package menene.app.quickshare.utility
 
 import android.content.Context
-import android.provider.ContactsContract.Data
 import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -34,7 +33,7 @@ object FirebaseApi {
                         }
                     if (currentUser != null) {
                         scope.launch {
-                            UserRepository().saveUserData(User(email.substringBefore("@"), ""))
+                            UserRepository().saveUserData(User(email.substringBefore("@"), ""), currentUser.uid)
                         }
                     }
                     auth.signOut()

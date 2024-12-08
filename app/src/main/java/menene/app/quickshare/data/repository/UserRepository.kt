@@ -1,9 +1,7 @@
 package menene.app.quickshare.data.repository
 
-import com.google.firebase.Firebase
 import kotlinx.coroutines.tasks.await
 import menene.app.quickshare.data.model.User
-import menene.app.quickshare.utility.FirebaseApi.getCurrentUserUid
 import menene.app.quickshare.utility.FirebaseApi.getUsersReference
 
 class UserRepository {
@@ -17,11 +15,9 @@ class UserRepository {
         }
     }
 
-    suspend fun saveUserData(user: User): Boolean {
-        val userUid = Firebase.getCurrentUserUid()
-
+    suspend fun saveUserData(user: User, id: String): Boolean {
         return try {
-            userRef.child(userUid).setValue(user).await()
+            userRef.child(id).setValue(user).await()
             true
         } catch (e: Exception) {
             false

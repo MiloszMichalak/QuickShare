@@ -13,11 +13,9 @@ class NoteViewModel: ViewModel() {
 
     private val noteRepository = NoteRepository()
 
-    fun getNote(id: String){
-        viewModelScope.launch {
-            val note = noteRepository.getNote(id)
-            _noteState.value = note
-        }
+    fun initialize(id: String){
+        getNote(id)
+        observeNote(id)
     }
 
     fun saveNote(note: Note){
@@ -26,7 +24,14 @@ class NoteViewModel: ViewModel() {
         }
     }
 
-    fun observeNote(id: String){
+    private fun getNote(id: String){
+        viewModelScope.launch {
+            val note = noteRepository.getNote(id)
+            _noteState.value = note
+        }
+    }
+
+    private fun observeNote(id: String){
         noteRepository.observeNote(id){
             _noteState.value = it
         }

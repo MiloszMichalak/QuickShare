@@ -13,8 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.traceEventEnd
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,7 +21,6 @@ import androidx.navigation.NavHostController
 import com.google.firebase.Firebase
 import menene.app.quickshare.R
 import menene.app.quickshare.navigation.Screen
-import menene.app.quickshare.navigation.screen.notescreen.NoteViewModel
 import menene.app.quickshare.presentation.TopAppBar
 import menene.app.quickshare.utility.FirebaseApi.getCurrentUserUid
 
@@ -40,7 +37,10 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(user?.imageUri ?: "")
+            TopAppBar(
+                user?.imageUri ?: "",
+                navController
+            )
         },
         content = { innerPadding ->
             Column(
