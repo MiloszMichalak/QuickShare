@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name" translatable="false">QuickShare</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="password_mismatch">Passwords do not match</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="email_taken">Email taken</string>
+    <string name="email_not_verified">Email not verified</string>
+    <string name="short_password">Password must have 6 chars at least</string>
+    <string name="log_in">Log in</string>
+    <string name="welcome_back">Hey,\nWelcome\nBack</string>
+    <string name="password">Password</string>
+    <string name="get_started">Let\'s get\nstarted</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="welcome_header">"QuickShare notes with friends."</string>
+    <string name="welcome_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard</string>
+    <string name="change_visibility">Change visibility</string>
+    <string name="sent_verification_email">"Verification email sent"</string>
+    <string name="user_profile_image">User profile image</string>
+    <string name="enter_code">Enter note\'s code</string>
+    <string name="title">Title</string>
+</resources>

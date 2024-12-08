@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_password">Nieprawidłowe hasło</string>
+    <string name="invalid_email">Nieprawidłowy email</string>
+    <string name="password_mismatch">Hasła się różnią</string>
+    <string name="email_taken">Email zajęty</string>
+    <string name="email_not_verified">Email nie zweryfikowany</string>
+    <string name="short_password">Hasło musi miec minimum 6 znaków</string>
+    <string name="log_in">Zaloguj</string>
+    <string name="welcome_back">Hej,\nWitaj\nSpowrotem</string>
+    <string name="password">Hasło</string>
+    <string name="get_started">Zacznijmy</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="sign_up">Zarejestruj</string>
+    <string name="welcome_header">"QuickShare notatki ze znajomymi."</string>
+    <string name="welcome_body">Lorem Ipsum jest po prostu fikcyjnym tekstem przemysłu poligraficznego i składania. Lorem Ipsum jest standardem przemysłu</string>
+    <string name="change_visibility">Zmień widoczność</string>
+    <string name="sent_verification_email">"Wysłano email weryfikacyjny"</string>
+    <string name="user_profile_image">Zdjęcie profilowe użytkownika</string>
+    <string name="enter_code">Wpisz kod notatki</string>
+    <string name="title">Tytuł</string>
+</resources>
