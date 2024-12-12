@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import menene.app.quickshare.navigation.Screen
-import menene.app.quickshare.navigation.graphs.MainGraph
+import menene.app.quickshare.navigation.graphs.NavGraph
 import menene.app.quickshare.ui.theme.QuickShareTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val navController = rememberNavController()
-                        MainGraph(
+                        NavGraph(
                             navController = navController,
                             startDestination = if (Firebase.auth.currentUser == null) Screen.AuthGraph else Screen.ListGraph
                         )

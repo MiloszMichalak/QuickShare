@@ -3,16 +3,21 @@ package menene.app.quickshare.navigation.graphs
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import menene.app.quickshare.navigation.Screen
+import menene.app.quickshare.navigation.screen.SharedViewModel
+import menene.app.quickshare.navigation.screen.authscreen.AuthViewModel
 
 @Composable
-fun MainGraph(
+fun NavGraph(
     navController: NavHostController,
     startDestination: Screen,
 ) {
-    val time = 700
+    val time = 500
+    val sharedViewModel: SharedViewModel = hiltViewModel<SharedViewModel>()
+    val authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -37,8 +42,14 @@ fun MainGraph(
             )
         },
     ) {
-        authGraph(navController)
+        authGraph(
+            navController,
+            authViewModel,
+        )
 
-        listGraph(navController)
+        mainGraph(
+            navController,
+            sharedViewModel
+        )
     }
 }

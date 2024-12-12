@@ -5,11 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import menene.app.quickshare.navigation.Screen
+import menene.app.quickshare.navigation.screen.authscreen.AuthViewModel
 import menene.app.quickshare.navigation.screen.authscreen.LoginScreen
 import menene.app.quickshare.navigation.screen.authscreen.OnBoardingScreen
 import menene.app.quickshare.navigation.screen.authscreen.RegisterScreen
 
-fun NavGraphBuilder.authGraph(navController: NavHostController){
+fun NavGraphBuilder.authGraph(
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+){
     navigation<Screen.AuthGraph>(
         startDestination = Screen.OnBoarding,
     ){
@@ -17,10 +21,16 @@ fun NavGraphBuilder.authGraph(navController: NavHostController){
             OnBoardingScreen(navController)
         }
         composable<Screen.Login> {
-            LoginScreen(navController)
+            LoginScreen(
+                navController,
+                authViewModel
+            )
         }
         composable<Screen.Register> {
-            RegisterScreen(navController)
+            RegisterScreen(
+                navController,
+                authViewModel
+            )
         }
     }
 }

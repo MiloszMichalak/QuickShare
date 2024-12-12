@@ -2,16 +2,19 @@ package menene.app.quickshare.navigation.screen.notescreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import menene.app.quickshare.data.model.Note
 import menene.app.quickshare.data.repository.NoteRepository
+import javax.inject.Inject
 
-class NoteViewModel: ViewModel() {
+@HiltViewModel
+class NoteViewModel @Inject constructor(
+    private val noteRepository: NoteRepository
+): ViewModel() {
     private val _noteState = MutableStateFlow<Note?>(null)
     val noteState = _noteState
-
-    private val noteRepository = NoteRepository()
 
     fun initialize(id: String){
         getNote(id)

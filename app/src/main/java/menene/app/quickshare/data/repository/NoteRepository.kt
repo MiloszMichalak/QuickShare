@@ -2,18 +2,19 @@ package menene.app.quickshare.data.repository
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import kotlinx.coroutines.tasks.await
 import menene.app.quickshare.data.model.Note
-import menene.app.quickshare.utility.FirebaseApi.getNotesReference
+import javax.inject.Inject
 
-class NoteRepository {
-    private val noteRef = getNotesReference()
-
+class NoteRepository @Inject constructor(
+    private val noteReference: DatabaseReference
+) {
     suspend fun saveNote(note: Note): Boolean {
         return try {
-            noteRef.child(note.id).setValue(note).await()
+            noteReference.child(note.id).setValue(note).await()
             true
         } catch (e: Exception){
             false
@@ -21,7 +22,7 @@ class NoteRepository {
     }
 
     suspend fun getNote(id: String): Note? {
-        val note = noteRef.child(id).get().await()
+        val note = noteReference.child(id).get().await()
         return try {
             if (note.exists()){
                 note.getValue<Note>()
@@ -36,7 +37,7 @@ class NoteRepository {
     }
 
     fun observeNote(id: String, callback: (Note?) -> Unit){
-        noteRef.child(id).addValueEventListener(object: ValueEventListener {
+        noteReference.child(id).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val note = snapshot.getValue(Note::class.java)
                 callback(note)

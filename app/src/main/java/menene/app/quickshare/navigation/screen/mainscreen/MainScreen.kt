@@ -15,46 +15,47 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.firebase.Firebase
 import menene.app.quickshare.R
 import menene.app.quickshare.navigation.Screen
+import menene.app.quickshare.navigation.screen.SharedViewModel
 import menene.app.quickshare.presentation.TopAppBar
 import menene.app.quickshare.utility.FirebaseApi.getCurrentUserUid
 
 @Composable
 fun MainScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel = hiltViewModel()
 ) {
-    val viewModel = viewModel<MainViewModel>()
-    val user by viewModel.userState.collectAsStateWithLifecycle()
+    val user by sharedViewModel.userState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.getUser(Firebase.getCurrentUserUid())
+        sharedViewModel.getUser(Firebase.getCurrentUserUid())
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                user?.imageUri ?: "",
+                user,
                 navController
             )
         },
         content = { innerPadding ->
             Column(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding)
             ) {
-                var text by remember { mutableStateOf("") }
+                var noteId by remember { mutableStateOf("") }
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = text,
-                    onValueChange = { text = it },
+                    value = noteId,
+                    onValueChange = { noteId = it },
                     label = { Text(stringResource(id = R.string.enter_code))},
                     singleLine = true,
                     keyboardActions = KeyboardActions {
-                        navController.navigate(Screen.NoteScreen(text))
+                        navController.navigate(Screen.NoteScreen(noteId))
                     }
                 )
             }

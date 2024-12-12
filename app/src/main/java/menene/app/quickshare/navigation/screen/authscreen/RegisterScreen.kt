@@ -2,6 +2,7 @@ package menene.app.quickshare.navigation.screen.authscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -11,21 +12,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import menene.app.quickshare.R
-import menene.app.quickshare.navigation.Screen
 import menene.app.quickshare.presentation.button.WideButton
 import menene.app.quickshare.presentation.text.ErrorText
 import menene.app.quickshare.presentation.text.HeaderText
 import menene.app.quickshare.presentation.textfield.EmailOutlinedTextField
 import menene.app.quickshare.presentation.textfield.PasswordOutlinedTextField
-import menene.app.quickshare.utility.FirebaseApi
 import menene.app.quickshare.utility.Validation
 
 
 @Composable
-fun RegisterScreen(navController: NavHostController) {
+fun RegisterScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
     Column {
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
+
+        val isComplete by authViewModel.isCompleteSignUp.collectAsState()
 
         HeaderText(
             text = stringResource(id = R.string.get_started),
@@ -81,13 +85,13 @@ fun RegisterScreen(navController: NavHostController) {
                 confirmPasswordError = !Validation.checkPasswords(passwordText, confirmPasswordText)
 
                 if (emailError.isEmpty() && !passwordError && !confirmPasswordError) {
-                    FirebaseApi.signUp(emailText, passwordText, context, scope, onComplete = { isComplete ->
-                            if (isComplete) {
-                                navController.popBackStack()
-                            } else {
-                                emailError = context.getString(R.string.email_taken)
-                            }
-                        })
+                    authViewModel.signUp(emailText, passwordText, scope)
+                }
+
+                if (isComplete == true) {
+                    navController.popBackStack()
+                } else {
+                    emailError = context.getString(R.string.email_taken)
                 }
             }
         )

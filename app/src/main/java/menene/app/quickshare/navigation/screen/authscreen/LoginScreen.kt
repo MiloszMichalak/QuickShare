@@ -16,11 +16,13 @@ import menene.app.quickshare.presentation.text.ErrorText
 import menene.app.quickshare.presentation.text.HeaderText
 import menene.app.quickshare.presentation.textfield.EmailOutlinedTextField
 import menene.app.quickshare.presentation.textfield.PasswordOutlinedTextField
-import menene.app.quickshare.utility.FirebaseApi
 import menene.app.quickshare.utility.Validation
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
     Column {
         HeaderText(
             text = stringResource(id = R.string.welcome_back)
@@ -31,8 +33,10 @@ fun LoginScreen(navController: NavHostController) {
         var emailText by remember { mutableStateOf("") }
         var passwordText by remember { mutableStateOf("") }
 
-        var emailError by remember { mutableStateOf("") }
+        var emailError = authViewModel.logInMessage
+
         var passwordError by remember { mutableStateOf(false) }
+
 
         EmailOutlinedTextField(
             value = emailText,
@@ -63,16 +67,14 @@ fun LoginScreen(navController: NavHostController) {
                 passwordError = !Validation.validatePassword(passwordText)
 
                 if (emailError.isEmpty() && !passwordError){
-                    FirebaseApi.logIn(emailText, passwordText, context, onComplete = { completeText ->
-                        if (completeText.isEmpty()){
-                            navController.navigate(Screen.ListGraph) {
-                                popUpTo(Screen.AuthGraph) { inclusive = true }
-                            }
-                        } else {
-                            emailError = completeText
-                            passwordError = completeText != context.getString(R.string.email_not_verified)
-                        }
-                    })
+                    authViewModel.logIn(emailText, passwordText) }
+
+                if (emailError.isEmpty()){
+                    navController.navigate(Screen.ListGraph) {
+                        popUpTo(Screen.AuthGraph) { inclusive = true }
+                    }
+                } else {
+                    passwordError = emailError != context.getString(R.string.email_not_verified)
                 }
             }
         )

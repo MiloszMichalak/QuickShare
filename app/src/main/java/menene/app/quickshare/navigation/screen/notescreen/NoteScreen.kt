@@ -19,8 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 import menene.app.quickshare.R
 
@@ -28,7 +28,7 @@ import menene.app.quickshare.R
 fun NoteScreen(
     noteId: String
 ) {
-    val viewModel = viewModel<NoteViewModel>()
+    val viewModel = hiltViewModel<NoteViewModel>()
     val note by viewModel.noteState.collectAsStateWithLifecycle()
 
     var title by remember { mutableStateOf("") }
