@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import menene.app.quickshare.R
 import menene.app.quickshare.data.model.User
+import menene.app.quickshare.navigation.screen.authscreen.AuthState
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -33,47 +34,47 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun signUp(email: String, password: String, scope: CoroutineScope): Boolean {
+    suspend fun signUp(email: String, password: String, scope: CoroutineScope): AuthState {
         return try {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val currentUser = auth.currentUser
-                        currentUser?.sendEmailVerification()
-                            ?.addOnSuccessListener {
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.sent_verification_email),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        if (currentUser != null) {
-                            scope.launch {
-                                saveUserData(User(email.substringBefore("@"), ""), currentUser.uid)
-                            }
-                        }
-                        auth.signOut()
-                    }
+            auth.createUserWithEmailAndPassword(email, password).await()
+
+            val currentUser = auth.currentUser
+
+            currentUser?.let {
+                it.sendEmailVerification().await()
+
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.sent_verification_email),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                scope.launch {
+                    saveUserData(User(email.substringBefore("@"), ""), currentUser.uid)
                 }
-            true
+                auth.signOut()
+            }
+            AuthState.Success
         } catch (e: Exception) {
-            false
+            AuthState.Error(context.getString(R.string.email_taken))
         }
     }
 
 
-    fun logIn(email: String, password: String): String{
-        var returnString = ""
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                val currentUser = auth.currentUser
-                val isEmailVerified = currentUser?.isEmailVerified
-                returnString = if (!task.isSuccessful && isEmailVerified == false) {
-                    context.getString(R.string.email_not_verified)
-                } else {
-                    context.getString(R.string.invalid_email)
-                }
+    suspend fun logIn(email: String, password: String): AuthState {
+        return try {
+            auth.signInWithEmailAndPassword(email, password).await()
+
+            val isEmailVerified = auth.currentUser?.isEmailVerified
+
+            if (isEmailVerified == true) {
+                AuthState.Success
+            } else {
+                auth.signOut()
+                AuthState.Error(context.getString(R.string.email_not_verified))
             }
-        return returnString
+        } catch (e: Exception) {
+            AuthState.Error(context.getString(R.string.invalid_credentials))
+        }
     }
 }

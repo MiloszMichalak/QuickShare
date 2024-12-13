@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import menene.app.quickshare.R
 import menene.app.quickshare.navigation.Screen
@@ -33,10 +34,19 @@ fun LoginScreen(
         var emailText by remember { mutableStateOf("") }
         var passwordText by remember { mutableStateOf("") }
 
-        var emailError = authViewModel.logInMessage
-
+        var emailError by remember { mutableStateOf("") }
         var passwordError by remember { mutableStateOf(false) }
 
+        val error: AuthState by authViewModel.logInMessage.collectAsStateWithLifecycle()
+        when (error) {
+            is AuthState.Error -> emailError = (error as AuthState.Error).message
+            is AuthState.Success -> {
+                navController.navigate(Screen.ListGraph){
+                    popUpTo(Screen.AuthGraph) {inclusive = true}
+                }
+            }
+            AuthState.Idle -> {}
+        }
 
         EmailOutlinedTextField(
             value = emailText,
@@ -67,14 +77,7 @@ fun LoginScreen(
                 passwordError = !Validation.validatePassword(passwordText)
 
                 if (emailError.isEmpty() && !passwordError){
-                    authViewModel.logIn(emailText, passwordText) }
-
-                if (emailError.isEmpty()){
-                    navController.navigate(Screen.ListGraph) {
-                        popUpTo(Screen.AuthGraph) { inclusive = true }
-                    }
-                } else {
-                    passwordError = emailError != context.getString(R.string.email_not_verified)
+                    authViewModel.logIn(emailText, passwordText)
                 }
             }
         )

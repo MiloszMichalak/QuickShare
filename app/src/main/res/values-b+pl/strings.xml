@@ -19,4 +19,6 @@
     <string name="user_profile_image">Zdjęcie profilowe użytkownika</string>
     <string name="enter_code">Wpisz kod notatki</string>
     <string name="title">Tytuł</string>
+    <string name="success">sukces</string>
+    <string name="invalid_credentials">Nieprawidłowe dane logowania</string>
 </resources>

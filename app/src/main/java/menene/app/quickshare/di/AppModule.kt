@@ -1,15 +1,17 @@
 package menene.app.quickshare.di
 
 import android.app.Application
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import menene.app.quickshare.data.repository.NoteRepository
 import menene.app.quickshare.data.repository.UserRepository
-import menene.app.quickshare.utility.FirebaseApi
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -43,14 +45,20 @@ object AppModule {
     @Provides
     @Singleton
     @Named("userRef")
-    fun provideUserDatabaseReference(): DatabaseReference {
-        return FirebaseApi.getUsersReference()
+    fun provideUserDatabaseReference(instance: FirebaseDatabase): DatabaseReference {
+        return instance.getReference("users")
     }
 
     @Provides
     @Singleton
     @Named("noteRef")
-    fun provideNoteDatabaseReference(): DatabaseReference {
-        return FirebaseApi.getNotesReference()
+    fun provideNoteDatabaseReference(instance: FirebaseDatabase): DatabaseReference {
+        return instance.getReference("notes")
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseInstance(): FirebaseDatabase{
+        return Firebase.database("https://quickshare-3b4e9-default-rtdb.europe-west1.firebasedatabase.app/")
     }
 }

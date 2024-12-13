@@ -20,4 +20,6 @@
     <string name="user_profile_image">User profile image</string>
     <string name="enter_code">Enter note\'s code</string>
     <string name="title">Title</string>
+    <string name="success">success</string>
+    <string name="invalid_credentials">Invalid credentials</string>
 </resources>

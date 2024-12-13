@@ -13,16 +13,11 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val userRepository: UserRepository
 ): ViewModel() {
-    private val _logInMessage = MutableStateFlow("")
+    private val _logInMessage = MutableStateFlow<AuthState>(AuthState.Idle)
+    var logInMessage = _logInMessage
 
-    var logInMessage: String
-        get() = _logInMessage.value
-        set(value) {
-            _logInMessage.value = value
-        }
-
-    private val _isCompleteSignUp = MutableStateFlow<Boolean?>(null)
-    val isCompleteSignUp = _isCompleteSignUp
+    private val _isCompleteSignUp = MutableStateFlow<AuthState>(AuthState.Idle)
+    var isCompleteSignUp = _isCompleteSignUp
 
     fun logIn(email: String, password: String) {
         viewModelScope.launch {
@@ -36,5 +31,9 @@ class AuthViewModel @Inject constructor(
             val isComplete = userRepository.signUp(email, password, scope)
             _isCompleteSignUp.value = isComplete
         }
+    }
+
+    fun resetAuthState() {
+        _isCompleteSignUp.value = AuthState.Idle
     }
 }

@@ -1,8 +1,10 @@
 package menene.app.quickshare.utility
 
+import android.util.Patterns
+
 object Validation {
     fun validateEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
     }
 
     fun validatePassword(password: String): Boolean {
