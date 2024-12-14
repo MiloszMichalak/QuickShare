@@ -35,8 +35,10 @@ class NoteViewModel @Inject constructor(
     }
 
     private fun observeNote(id: String){
-        noteRepository.observeNote(id){
-            _noteState.value = it
+        viewModelScope.launch {
+            noteRepository.observeNote(id){
+                _noteState.value = it
+            }
         }
     }
 }

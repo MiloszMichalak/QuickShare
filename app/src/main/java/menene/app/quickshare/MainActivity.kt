@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuickShareTheme {
                 Scaffold { innerPadding ->
+                    val navController = rememberNavController()
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
@@ -36,9 +37,8 @@ class MainActivity : ComponentActivity() {
                                 start = 16.dp,
                                 end = 16.dp
                             ),
-                        color = MaterialTheme.colorScheme.background
+                        color = MaterialTheme.colorScheme.background,
                     ) {
-                        val navController = rememberNavController()
                         NavGraph(
                             navController = navController,
                             startDestination = if (Firebase.auth.currentUser == null) Screen.AuthGraph else Screen.ListGraph

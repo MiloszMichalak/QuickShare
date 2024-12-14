@@ -21,4 +21,6 @@
     <string name="title">Tytuł</string>
     <string name="success">sukces</string>
     <string name="invalid_credentials">Nieprawidłowe dane logowania</string>
+    <string name="your_notes">Twoje notatki</string>
+    <string name="more_icon">Ikona do wylogowywania</string>
 </resources>

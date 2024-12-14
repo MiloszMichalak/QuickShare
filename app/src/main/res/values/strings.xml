@@ -22,4 +22,6 @@
     <string name="title">Title</string>
     <string name="success">success</string>
     <string name="invalid_credentials">Invalid credentials</string>
+    <string name="your_notes">Your notes</string>
+    <string name="more_icon">Logout icon</string>
 </resources>

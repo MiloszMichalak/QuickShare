@@ -30,4 +30,9 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
     ),
+    titleMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+    )
 )

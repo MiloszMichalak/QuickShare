@@ -1,6 +1,7 @@
 package menene.app.quickshare.navigation.screen.mainscreen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -19,10 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseAuth
 import menene.app.quickshare.R
 import menene.app.quickshare.navigation.Screen
 import menene.app.quickshare.navigation.screen.SharedViewModel
@@ -32,12 +33,12 @@ import menene.app.quickshare.presentation.image.ProfilePicture
 @Composable
 fun MainScreen(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = hiltViewModel()
+    sharedViewModel: SharedViewModel = hiltViewModel(),
 ) {
     val user by sharedViewModel.userState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        sharedViewModel.getUser(FirebaseAuth.getInstance().currentUser?.uid ?: "")
+        sharedViewModel.getUser(sharedViewModel.userId)
     }
 
     Scaffold(
@@ -50,8 +51,9 @@ fun MainScreen(
                     ) { navController.navigate(Screen.UserScreen) }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceBright,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 ),
+                windowInsets = WindowInsets(top = 0.dp)
             )
         },
     ){ innerPadding ->

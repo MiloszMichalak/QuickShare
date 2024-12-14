@@ -10,11 +10,15 @@ import menene.app.quickshare.data.model.Note
 import javax.inject.Inject
 
 class NoteRepository @Inject constructor(
-    private val noteReference: DatabaseReference
+    private val noteReference: DatabaseReference,
+    private val userReference: DatabaseReference,
+    private val userId: String
 ) {
     suspend fun saveNote(note: Note): Boolean {
         return try {
             noteReference.child(note.id).setValue(note).await()
+            userReference.child(userId).child("userNotes").child(note.id)
+                .setValue(true).await()
             true
         } catch (e: Exception){
             false
@@ -35,6 +39,33 @@ class NoteRepository @Inject constructor(
             null
         }
     }
+
+    private suspend fun getNotesIds(): List<String> {
+        return try {
+            userReference.child(userId).child("userNotes").get().await()
+                .children.mapNotNull { it.key }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getUserNotes(): List<Note> {
+        return try {
+            val notesIds = getNotesIds()
+            notesIds.mapNotNull { getNote(it) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+//    suspend fun getAllNotes(): List<Note> {
+//        return try {
+//            noteReference.get().await().
+//            children.mapNotNull { it.getValue<Note>() }
+//        } catch (e: Exception) {
+//            emptyList()
+//        }
+//    }
 
     fun observeNote(id: String, callback: (Note?) -> Unit){
         noteReference.child(id).addValueEventListener(object: ValueEventListener {

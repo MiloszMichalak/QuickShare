@@ -32,8 +32,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteRepository(@Named("noteRef") noteReference: DatabaseReference): NoteRepository {
-        return NoteRepository(noteReference)
+    fun provideNoteRepository(
+        @Named("noteRef") noteReference: DatabaseReference,
+        @Named("userRef") userReference: DatabaseReference,
+        userId: String
+    ): NoteRepository {
+        return NoteRepository(noteReference, userReference, userId)
     }
 
     @Provides
@@ -60,5 +64,11 @@ object AppModule {
     @Singleton
     fun provideDatabaseInstance(): FirebaseDatabase{
         return Firebase.database("https://quickshare-3b4e9-default-rtdb.europe-west1.firebasedatabase.app/")
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserId(auth: FirebaseAuth): String {
+        return auth.currentUser?.uid ?: ""
     }
 }

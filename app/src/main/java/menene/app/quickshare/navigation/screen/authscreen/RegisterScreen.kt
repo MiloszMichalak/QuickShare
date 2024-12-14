@@ -25,13 +25,11 @@ fun RegisterScreen(
     navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
-    Column {
+    Column{
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
 
-        HeaderText(
-            text = stringResource(id = R.string.get_started),
-        )
+        HeaderText(stringResource(id = R.string.get_started))
 
         var emailText by remember { mutableStateOf("") }
         var passwordText by remember { mutableStateOf("") }

@@ -30,7 +30,7 @@ fun NavGraphBuilder.mainGraph(
             NoteScreen(noteId = note.noteId,)
         }
         composable<Screen.UserScreen> {
-            UserScreen(sharedViewModel)
+            UserScreen(sharedViewModel, navController)
         }
     }
 }
