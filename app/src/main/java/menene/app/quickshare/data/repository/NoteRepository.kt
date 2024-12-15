@@ -17,8 +17,6 @@ class NoteRepository @Inject constructor(
     suspend fun saveNote(note: Note): Boolean {
         return try {
             noteReference.child(note.id).setValue(note).await()
-            userReference.child(userId).child("userNotes").child(note.id)
-                .setValue(true).await()
             true
         } catch (e: Exception){
             false
@@ -33,11 +31,17 @@ class NoteRepository @Inject constructor(
             } else {
                 val noteModel = Note(id = id)
                 saveNote(noteModel)
+                saveNoteInUser(id)
                 noteModel
             }
         } catch (e: Exception) {
             null
         }
+    }
+
+    private suspend fun saveNoteInUser(id: String) {
+        userReference.child(userId).child("userNotes").child(id)
+            .setValue(true).await()
     }
 
     private suspend fun getNotesIds(): List<String> {
