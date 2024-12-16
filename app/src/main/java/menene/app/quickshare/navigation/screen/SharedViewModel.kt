@@ -15,7 +15,6 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val noteRepository: NoteRepository,
-    val userId: String
 ): ViewModel() {
     private val _userState = MutableStateFlow<User?>(null)
     val userState = _userState
@@ -23,9 +22,9 @@ class SharedViewModel @Inject constructor(
     private val _userNotes = MutableStateFlow<List<Note>>(emptyList())
     val userNotes = _userNotes
 
-    fun getUser(userId: String){
+    fun getUser(){
         viewModelScope.launch {
-            val user = userRepository.getUser(userId)
+            val user = userRepository.getUser()
             _userState.value = user
         }
     }

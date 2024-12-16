@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import dagger.Module
 import dagger.Provides
+import dagger.Lazy
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import menene.app.quickshare.data.repository.NoteRepository
@@ -25,9 +26,10 @@ object AppModule {
     fun provideUserRepository(
         @Named("userRef") userReference: DatabaseReference,
         auth: FirebaseAuth,
+        userId: Lazy<String>,
         application: Application
     ): UserRepository {
-        return UserRepository(userReference, auth, application)
+        return UserRepository(userReference, auth, userId, application)
     }
 
     @Provides
@@ -35,7 +37,7 @@ object AppModule {
     fun provideNoteRepository(
         @Named("noteRef") noteReference: DatabaseReference,
         @Named("userRef") userReference: DatabaseReference,
-        userId: String
+        userId: Lazy<String>
     ): NoteRepository {
         return NoteRepository(noteReference, userReference, userId)
     }
@@ -62,7 +64,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseInstance(): FirebaseDatabase{
+    fun provideDatabaseInstance(): FirebaseDatabase {
         return Firebase.database("https://quickshare-3b4e9-default-rtdb.europe-west1.firebasedatabase.app/")
     }
 

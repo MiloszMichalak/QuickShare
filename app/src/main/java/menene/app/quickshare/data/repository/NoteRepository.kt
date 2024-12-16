@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
+import dagger.Lazy
 import kotlinx.coroutines.tasks.await
 import menene.app.quickshare.data.model.Note
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class NoteRepository @Inject constructor(
     private val noteReference: DatabaseReference,
     private val userReference: DatabaseReference,
-    private val userId: String
+    private val userId: Lazy<String>
 ) {
     suspend fun saveNote(note: Note): Boolean {
         return try {
@@ -40,13 +41,13 @@ class NoteRepository @Inject constructor(
     }
 
     private suspend fun saveNoteInUser(id: String) {
-        userReference.child(userId).child("userNotes").child(id)
+        userReference.child(userId.get()).child("userNotes").child(id)
             .setValue(true).await()
     }
 
     private suspend fun getNotesIds(): List<String> {
         return try {
-            userReference.child(userId).child("userNotes").get().await()
+            userReference.child(userId.get()).child("userNotes").get().await()
                 .children.mapNotNull { it.key }
         } catch (e: Exception) {
             emptyList()

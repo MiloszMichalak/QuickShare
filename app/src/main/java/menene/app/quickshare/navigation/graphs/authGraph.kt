@@ -12,7 +12,7 @@ import menene.app.quickshare.navigation.screen.authscreen.RegisterScreen
 
 fun NavGraphBuilder.authGraph(
     navController: NavHostController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
 ){
     navigation<Screen.AuthGraph>(
         startDestination = Screen.OnBoarding,
@@ -23,7 +23,7 @@ fun NavGraphBuilder.authGraph(
         composable<Screen.Login> {
             LoginScreen(
                 navController,
-                authViewModel
+                authViewModel,
             )
         }
         composable<Screen.Register> {

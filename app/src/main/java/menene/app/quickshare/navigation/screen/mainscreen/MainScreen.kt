@@ -38,7 +38,7 @@ fun MainScreen(
     val user by sharedViewModel.userState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        sharedViewModel.getUser(sharedViewModel.userId)
+        sharedViewModel.getUser()
     }
 
     Scaffold(

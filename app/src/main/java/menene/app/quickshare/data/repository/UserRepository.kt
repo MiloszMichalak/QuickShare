@@ -4,6 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -15,11 +16,12 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     private val userRef: DatabaseReference,
     private val auth: FirebaseAuth,
+    private val userId: Lazy<String>,
     private val context: Application
 ) {
-    suspend fun getUser(userId: String): User? {
+    suspend fun getUser(): User? {
         return try {
-            userRef.child(userId).get().await().getValue(User::class.java)
+            userRef.child(userId.get()).get().await().getValue(User::class.java)
         } catch (e: Exception) {
             null
         }
@@ -50,7 +52,7 @@ class UserRepository @Inject constructor(
                 ).show()
 
                 scope.launch {
-                    saveUserData(User(email.substringBefore("@"), ""), currentUser.uid)
+                    saveUserData(User(email.substringBefore("@"), ""), it.uid)
                 }
                 auth.signOut()
             }
