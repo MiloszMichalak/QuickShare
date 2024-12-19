@@ -24,4 +24,6 @@
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="your_notes">Your notes</string>
     <string name="more_icon">Logout icon</string>
+    <string name="logout">Logout</string>
+    <string name="note_id" translatable="false">Id: %1$s</string>
 </resources>

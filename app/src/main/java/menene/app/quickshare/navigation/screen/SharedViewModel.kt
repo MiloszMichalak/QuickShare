@@ -34,4 +34,10 @@ class SharedViewModel @Inject constructor(
             _userNotes.value = noteRepository.getUserNotes()
         }
     }
+
+    fun logOut(){
+        viewModelScope.launch {
+            userRepository.logOut()
+        }
+    }
 }

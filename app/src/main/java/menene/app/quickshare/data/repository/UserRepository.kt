@@ -79,4 +79,13 @@ class UserRepository @Inject constructor(
             AuthState.Error(context.getString(R.string.invalid_credentials))
         }
     }
+
+    fun logOut(){
+        auth.signOut()
+    }
+
+    // TODO logowanie przez google
+//    suspend fun logInWithGoogle(){
+//
+//    }
 }

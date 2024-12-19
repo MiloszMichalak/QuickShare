@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -22,11 +24,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val keystoreProperties = Properties()
+    val keyStorePropertiesFile = rootProject.file("/key/keystore.properties")
+    if (keyStorePropertiesFile.exists()) {
+        keystoreProperties.load(keyStorePropertiesFile.inputStream())
+    }
+
+    signingConfigs{
+        create("release") {
+            storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
+    }
     buildTypes {
         debug{
             isMinifyEnabled = false
         }
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -69,6 +86,8 @@ dependencies {
 
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.play.services.auth)
+    implementation(platform(libs.firebase.bom))
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
@@ -76,6 +95,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+
+    implementation(libs.richeditor.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

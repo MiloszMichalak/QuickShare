@@ -21,6 +21,7 @@ import menene.app.quickshare.data.model.User
 @Composable
 fun ProfilePicture(
     user: User?,
+    modifier: Modifier = Modifier,
     height: Int = 48,
     onClick: () -> Unit = {}
 ) {
@@ -33,7 +34,7 @@ fun ProfilePicture(
             .crossfade(true)
             .build(),
         contentDescription = stringResource(id = R.string.user_profile_image),
-        modifier = Modifier
+        modifier = modifier
             .height(height.dp)
             .clip(CircleShape)
             .clickable { onClick() }
